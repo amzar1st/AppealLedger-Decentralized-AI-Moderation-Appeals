@@ -116,7 +116,7 @@ class AppealLedger(gl.Contract):
         self.case_count = u256(int(self.case_count) + 1)
         case_id = str(self.case_count)
         case = {"id": case_id, "policy_version": policy_version,
-            "policy_hash": json.loads(self.policies[policy_version])["hash"], "author": str(author),
+            "policy_hash": json.loads(self.policies[policy_version])["hash"], "author": str(Address(author)),
             "content": content, "content_hash": content_hash, "original_reason": original_reason,
             "public_reference": public_reference, "registered_at": self._now(),
             "appeal_deadline": self._now() + int(self.appeal_window),

@@ -26,7 +26,11 @@ class Host:
 
 fake = types.ModuleType('genlayer')
 fake.__all__ = ['gl', 'Address', 'u256', 'TreeMap']
-fake.Address, fake.u256, fake.TreeMap = str, int, dict
+class Address(str):
+    def __new__(cls, value):
+        return str.__new__(cls, '0x' + format(value, '040x') if isinstance(value, int) else value)
+
+fake.Address, fake.u256, fake.TreeMap = Address, int, dict
 fake.gl = types.SimpleNamespace(Contract=object, message=types.SimpleNamespace(sender_address='admin'),
     public=types.SimpleNamespace(write=lambda f:f, view=lambda f:f),
     nondet=types.SimpleNamespace(exec_prompt=Host.prompt),
@@ -75,6 +79,11 @@ class ContractTests(unittest.TestCase):
         with self.assertRaises(ValueError): self.c.register_policy('x','x','x')
         with self.assertRaises(ValueError): self.c.register_decision(self.p,'stranger','x',m.digest('x'),'x','x')
         with self.assertRaises(ValueError): self.c.submit_appeal(self.case,'x','x')
+    def test_numeric_abi_author_normalized(self):
+        case_id = self.c.register_decision(self.p, 42, self.content, m.digest(self.content), 'Advertising', 'public')
+        fake.gl.message.sender_address = Address(42)
+        self.c.submit_appeal(case_id, 'governance', 'public post')
+        self.assertEqual(json.loads(self.c.get_case(case_id))['author'], '0x000000000000000000000000000000000000002a')
     def test_hash_mismatch(self):
         with self.assertRaises(ValueError): self.c.register_decision(self.p,'author','changed','0'*64,'x','x')
     def test_locked_policy(self):
