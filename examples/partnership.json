@@ -1,0 +1,13 @@
+{
+  "rule_id": "advertising-v1",
+  "rules": "Unsolicited product advertisements and direct sales promotions are prohibited. Governance proposals discussing commercial partnerships are permitted when they ask members to deliberate or vote rather than purchase a product. If essential context is missing, the appeal should be inconclusive.",
+  "policy_reference": "https://example.org/community/policies/advertising-v1",
+  "content": "Governance proposal: approve a commercial partnership with Acme to fund open-source tooling. Members will vote before any agreement is signed.",
+  "content_hash": "b44ba6d07c9d217320944cdd3ffe02ac9a25e7e2621bf8dc0e96424d45efed0d",
+  "original_reason": "Removed for violating the advertising policy because it names a commercial partner.",
+  "public_reference": "https://example.org/community/posts/proposal-1",
+  "arguments": "This post asks members to vote on a governance partnership. It does not sell a product. The policy explicitly permits such proposals.",
+  "public_evidence": "Synthetic demo: the complete original post is registered with this decision. No external claims or private messages are submitted.",
+  "expected_verdict": "OVERTURN",
+  "note": "Synthetic fixture; example.org references are illustrative audit pointers and are not fetched."
+}
