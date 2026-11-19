@@ -2,6 +2,10 @@
 
 A standalone GenLayer Intelligent Contract for appeals against **public-content** moderation. It locks the exact policy version and original content, independently re-evaluates an appeal through GenLayer validators, and records `UPHOLD`, `OVERTURN`, or `INCONCLUSIVE` in an append-only case history.
 
+## Verified deployment
+
+Deployed using the built-in Studio account: [`0x30015bfEE37c45D4D69b7Ad81207EAD2cbB0a18c`](https://explorer-studio.genlayer.com/address/0x30015bfEE37c45D4D69b7Ad81207EAD2cbB0a18c). The complete sample lifecycle finalized with **OVERTURN**. All six transactions show GenVM SUCCESS. 18 local tests and GitHub Actions passed. See [validation evidence](docs/VALIDATION.md) and the [finalized case export](examples/live_case.json).
+
 ## Quick start
 
 1. Import `contracts/appeal_ledger.py` into [GenLayer Studio](https://studio.genlayer.com).

@@ -1,0 +1,69 @@
+{
+  "appeal": {
+    "arguments": "This post asks members to vote on a governance partnership. It does not sell a product. The policy explicitly permits such proposals.",
+    "evidence": "Synthetic demo: the complete original post is registered with this decision. No external claims or private messages are submitted.",
+    "evidence_hash": "a25d5a609874bbd124a7696ee9bb32db09dd27b04df53b03010dc66b64b2dce5",
+    "submitted_at": 1795061197
+  },
+  "appeal_deadline": 1795665942,
+  "audit": [
+    {
+      "actor": "0xd410A16A05022918E5F8FBC0f4aCBA41AD86F00C",
+      "event": "DECISION_REGISTERED",
+      "hash": "eef7be3808d1c6b5c8a7e62d577e838a7ac0de0f0dd2485f56fffe5f1c479b04",
+      "previous": "",
+      "state_hash": "51c26dd6c8d37c3c7465913f32e6f56545c57d31e414d3a5db470ef02f156308",
+      "timestamp": 1795061142
+    },
+    {
+      "actor": "0xd410A16A05022918E5F8FBC0f4aCBA41AD86F00C",
+      "event": "APPEAL_SUBMITTED",
+      "hash": "4103c20dc178ef8180bc9f0d4b3d6d5e8c4cfe6383c55d9b8afcf24578c65077",
+      "previous": "eef7be3808d1c6b5c8a7e62d577e838a7ac0de0f0dd2485f56fffe5f1c479b04",
+      "state_hash": "ce3077e754cf8b089fb0bb8271bb9eb07952e93dd5496066a1e74979a47aae22",
+      "timestamp": 1795061197
+    },
+    {
+      "actor": "0xd410A16A05022918E5F8FBC0f4aCBA41AD86F00C",
+      "event": "REVIEW_AGREED",
+      "hash": "603b000a2181552ae008f793651269a549a90c70be4b5cf0c3eefe0fb2cab324",
+      "previous": "4103c20dc178ef8180bc9f0d4b3d6d5e8c4cfe6383c55d9b8afcf24578c65077",
+      "state_hash": "103d53667f20d8e2c6826589fec129b89bb8b5b74c16da62947e8020c7b09ba7",
+      "timestamp": 1795061272
+    },
+    {
+      "actor": "0xd410A16A05022918E5F8FBC0f4aCBA41AD86F00C",
+      "event": "APPEAL_FINALIZED",
+      "hash": "f8e6d19a7823c06678e34c118001f87bfb70e768a9a8eae52a4ecb74aec5354b",
+      "previous": "603b000a2181552ae008f793651269a549a90c70be4b5cf0c3eefe0fb2cab324",
+      "state_hash": "25188ddb0840fca41d5653ea26ff407c85d8d56203c8870115ccbcb370b03253",
+      "timestamp": 1795061400
+    }
+  ],
+  "author": "0xd410A16A05022918E5F8FBC0f4aCBA41AD86F00C",
+  "content": "Governance proposal: approve a commercial partnership with Acme to fund open-source tooling. Members will vote before any agreement is signed.",
+  "content_hash": "b44ba6d07c9d217320944cdd3ffe02ac9a25e7e2621bf8dc0e96424d45efed0d",
+  "finalization_reason": "VALIDATOR_REVIEW",
+  "finalized_at": 1795061400,
+  "id": "1",
+  "original_reason": "Removed for violating the advertising policy because it names a commercial partner.",
+  "policy_hash": "adbb2c3b51fd841ee8f0f23246e280d04c942862db05e2e87555145a0140bb8d",
+  "policy_version": "1",
+  "public_reference": "https://example.org/community/posts/proposal-1",
+  "registered_at": 1795061142,
+  "review": {
+    "assessment": {
+      "applicability": "YES",
+      "content_quote": "Governance proposal: approve a commercial partnership with Acme to fund open-source tooling. Members will vote before any agreement is signed.",
+      "evidence": "SUFFICIENT",
+      "policy_quote": "Governance proposals discussing commercial partnerships are permitted when they ask members to deliberate or vote rather than purchase a product.",
+      "reason": "The advertising policy applies, but its explicit governance exception permits this proposal. The original content seeks approval through a member vote, not a product purchase. Naming a commercial partner alone does not establish advertising, and the supplied content is sufficient to find no violation.",
+      "verdict": "OVERTURN",
+      "violation": "NO"
+    },
+    "reviewed_at": 1795061272
+  },
+  "review_deadline": 1795147597,
+  "status": "FINALIZED",
+  "verdict": "OVERTURN"
+}
