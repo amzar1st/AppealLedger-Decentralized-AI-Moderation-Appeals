@@ -7,7 +7,7 @@ Use the public-content synthetic example in `examples/partnership.json`.
 3. Open **Run and Debug** and choose **Normal (Full Consensus)**. Constructor: `appeal_window_seconds = 604800`, `review_window_seconds = 86400`.
 4. Deploy. Wait for successful network execution; retain the contract address and transaction hash. `get_config` must return the expected windows and administrator.
 5. Call `register_policy` as the deployer with the example's rule ID, rules and policy reference. Save the returned policy ID (normally `1`).
-6. Call `register_decision` as deployer, passing the returned policy ID and the built-in address as author for a one-account demo. Copy the original text and SHA-256 exactly from the fixture. Save the returned case ID.
+6. Call `register_decision` as deployer, passing the returned policy ID and the built-in address as author for a one-account demo. The `author` parameter is a hex **string** (`0x` plus 40 hex characters), validated and normalized by the contract. Copy the original text and SHA-256 exactly from the fixture. Save the returned case ID.
 7. From the registered author account call `submit_appeal` with the example arguments and evidence.
 8. Call `review_appeal(case_id)`. Wait for consensus. A failed or disputed transaction does not create a review. You may retry before the review deadline; never switch to leader-only mode to manufacture validation.
 9. Call `get_case`. Check `status == REVIEWED`, the assessment, rule applicability and quotations. The example is expected to produce OVERTURN, but live model behavior must be observed, not assumed.

@@ -28,7 +28,9 @@ fake = types.ModuleType('genlayer')
 fake.__all__ = ['gl', 'Address', 'u256', 'TreeMap']
 class Address(str):
     def __new__(cls, value):
-        return str.__new__(cls, '0x' + format(value, '040x') if isinstance(value, int) else value)
+        if not isinstance(value, str) or len(value) != 42 or not value.startswith('0x'): raise ValueError('Invalid address')
+        int(value[2:], 16)
+        return str.__new__(cls, value.lower())
 
 fake.Address, fake.u256, fake.TreeMap = Address, int, dict
 fake.gl = types.SimpleNamespace(Contract=object, message=types.SimpleNamespace(sender_address='admin'),
@@ -50,10 +52,10 @@ class ContractTests(unittest.TestCase):
         self.rules = 'Advertising is prohibited. Governance partnership proposals are permitted.'
         self.content = 'Governance proposal: approve a commercial partnership.'
         self.p = self.c.register_policy('ads', self.rules, 'https://example.org/rules/v1')
-        self.case = self.c.register_decision(self.p, 'author', self.content, m.digest(self.content), 'Advertising', 'https://example.org/posts/1')
+        self.case = self.c.register_decision(self.p, '0x000000000000000000000000000000000000002a', self.content, m.digest(self.content), 'Advertising', 'https://example.org/posts/1')
         Host.responses = []
     def appeal(self):
-        fake.gl.message.sender_address = 'author'
+        fake.gl.message.sender_address = '0x000000000000000000000000000000000000002a'
         self.c.submit_appeal(self.case, 'This is governance.', 'The complete public post is attached to the decision.')
     def response(self, applies='YES', violation='NO', evidence='SUFFICIENT'):
         return m.encode(dict(applicability=applies, violation=violation, evidence=evidence,
@@ -79,13 +81,16 @@ class ContractTests(unittest.TestCase):
         with self.assertRaises(ValueError): self.c.register_policy('x','x','x')
         with self.assertRaises(ValueError): self.c.register_decision(self.p,'stranger','x',m.digest('x'),'x','x')
         with self.assertRaises(ValueError): self.c.submit_appeal(self.case,'x','x')
-    def test_numeric_abi_author_normalized(self):
-        case_id = self.c.register_decision(self.p, 42, self.content, m.digest(self.content), 'Advertising', 'public')
-        fake.gl.message.sender_address = Address(42)
+    def test_author_requires_hex_string(self):
+        for author in (42, 'author', '0x' + 'z'*40):
+            with self.subTest(author=author), self.assertRaises(ValueError):
+                self.c.register_decision(self.p, author, self.content, m.digest(self.content), 'Advertising', 'public')
+        case_id = self.c.register_decision(self.p, '0x00000000000000000000000000000000000000AB', self.content, m.digest(self.content), 'Advertising', 'public')
+        fake.gl.message.sender_address = Address('0x00000000000000000000000000000000000000ab')
         self.c.submit_appeal(case_id, 'governance', 'public post')
-        self.assertEqual(json.loads(self.c.get_case(case_id))['author'], '0x000000000000000000000000000000000000002a')
+        self.assertEqual(json.loads(self.c.get_case(case_id))['author'], str(fake.gl.message.sender_address))
     def test_hash_mismatch(self):
-        with self.assertRaises(ValueError): self.c.register_decision(self.p,'author','changed','0'*64,'x','x')
+        with self.assertRaises(ValueError): self.c.register_decision(self.p,'0x000000000000000000000000000000000000002a','changed','0'*64,'x','x')
     def test_locked_policy(self):
         old = self.c.get_policy(self.p)
         self.c.register_policy('ads','All partnerships banned.','https://example.org/v2')
@@ -101,7 +106,7 @@ class ContractTests(unittest.TestCase):
     def test_appeal_deadline_inclusive(self):
         self.now=1100; self.appeal()
         self.setUp(); self.now=1101
-        fake.gl.message.sender_address='author'
+        fake.gl.message.sender_address='0x000000000000000000000000000000000000002a'
         with self.assertRaises(ValueError): self.c.submit_appeal(self.case,'x','x')
     def test_review_timeout(self):
         self.appeal()

@@ -103,11 +103,15 @@ class AppealLedger(gl.Contract):
         return version
 
     @gl.public.write
-    def register_decision(self, policy_version: str, author: Address, content: str,
+    def register_decision(self, policy_version: str, author: str, content: str,
                           content_hash: str, original_reason: str, public_reference: str) -> str:
         self._owner_only()
         if policy_version not in self.policies:
             raise ValueError("Unknown policy version")
+        bounded(author, "author address", 42)
+        if len(author) != 42 or not author.startswith("0x"):
+            raise ValueError("Author must be a 20-byte hex address")
+        normalized_author = str(Address(author))
         bounded(content, "public content", 16000)
         bounded(original_reason, "moderation reason", 2000)
         bounded(public_reference, "content reference", 500)
@@ -116,7 +120,7 @@ class AppealLedger(gl.Contract):
         self.case_count = u256(int(self.case_count) + 1)
         case_id = str(self.case_count)
         case = {"id": case_id, "policy_version": policy_version,
-            "policy_hash": json.loads(self.policies[policy_version])["hash"], "author": str(Address(author)),
+            "policy_hash": json.loads(self.policies[policy_version])["hash"], "author": normalized_author,
             "content": content, "content_hash": content_hash, "original_reason": original_reason,
             "public_reference": public_reference, "registered_at": self._now(),
             "appeal_deadline": self._now() + int(self.appeal_window),
